@@ -1,0 +1,143 @@
+HTML
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeMoney - Gestão Financeira por Horas de Trabalho</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Script para exportação do PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- Navegação -->
+  <nav class="navbar">
+    <div class="logo">TimeMoney 💡</div>
+    <div class="user-status" id="userStatus">Status: Configuração pendente</div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Seção 1: Configuração Inicial / Atualização de Salário -->
+    <section class="card" id="configCard">
+      <h2>1. Configuração Financeira</h2>
+      <form id="configForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="tipoRenda">Tipo de Receita</label>
+            <select id="tipoRenda" required>
+              <option value="bruta">Receita Bruta</option>
+              <option value="liquida">Receita Líquida</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="valorRenda">Valor Recebido Mensal (R$)</label>
+            <input type="number" id="valorRenda" placeholder="Ex: 3000.00" step="0.01" required>
+          </div>
+
+          <div class="form-group">
+            <label for="horasMensais">Horas Trabalhadas por Mês</label>
+            <input type="number" id="horasMensais" placeholder="Ex: 160" value="160" required>
+          </div>
+
+          <div class="form-group">
+            <label for="diaPagamento">Dia do Pagamento (1 a 31)</label>
+            <input type="number" id="diaPagamento" min="1" max="31" placeholder="Ex: 5" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar / Atualizar Dados</button>
+      </form>
+    </section>
+
+    <!-- Seção 2: Simulação de Compra -->
+    <section class="card" id="calcCard">
+      <h2>2. Simular Desejo de Compra</h2>
+      <form id="simularForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nomeProduto">Nome do Produto/Item</label>
+            <input type="number" style="display:none;">
+            <input type="text" id="nomeProduto" placeholder="Ex: Tênis Novo, Smartphone..." required>
+          </div>
+          <div class="form-group">
+            <label for="valorProduto">Valor do Produto (R$)</label>
+            <input type="number" id="valorProduto" placeholder="Ex: 450.00" step="0.01" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Analisar Custo em Tempo</button>
+      </form>
+    </section>
+
+    <!-- Seção 3: Dashboard de Controle -->
+    <section class="card" id="dashboardSection">
+      <div class="dashboard-header">
+        <div>
+          <h2>3. Dashboard de Impacto no Trabalho</h2>
+          <p id="periodoCicloText" class="cycle-text"></p>
+        </div>
+        <button class="btn btn-outline" id="downloadPdfBtn">📥 Baixar Relatório (PDF)</button>
+      </div>
+
+      <div class="dashboard-grid" id="reportContent">
+        <!-- Coluna Compras Aprovadas -->
+        <div class="dash-column compras-col">
+          <h3>🛍️ Compras Efetuadas</h3>
+          <div class="metrics">
+            <p>Total em R$: <strong id="totalComprasVal">R$ 0,00</strong></p>
+            <p>Total em Horas: <strong id="totalComprasHoras">0h</strong></p>
+            <p>Equivalente: <span id="totalComprasEquiv">0 dias / 0 meses</span></p>
+          </div>
+          <div class="item-list" id="listaCompras"></div>
+        </div>
+
+        <!-- Coluna Economias (Impulsos Evitados) -->
+        <div class="dash-column economia-col">
+          <h3>🛡️ Economias (Gasto Evitado)</h3>
+          <div class="metrics">
+            <p>Poupado em R$: <strong id="totalEconomiaVal">R$ 0,00</strong></p>
+            <p>Tempo Salvo: <strong id="totalEconomiaHoras">0h</strong></p>
+            <p>Equivalente: <span id="totalEconomiaEquiv">0 dias / 0 meses</span></p>
+          </div>
+          <div class="item-list" id="listaEconomia"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Modal / Pop-up de Decisão -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <h3>Análise de Custo de Vida</h3>
+      <p>Para comprar <strong id="modalNomeProd">---</strong> no valor de <strong id="modalValorProd">R$ 0,00</strong>, você precisará trabalhar:</p>
+      
+      <div class="modal-stats">
+        <div class="stat-box">
+          <span class="stat-number" id="modalHoras">0</span>
+          <span class="stat-label">Horas</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="modalDias">0</span>
+          <span class="stat-label">Dias úteis</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="modalSemanas">0</span>
+          <span class="stat-label">Semanas</span>
+        </div>
+      </div>
+
+      <p class="modal-question">Vale a pena trocar esse tempo de vida por este produto?</p>
+
+      <div class="modal-actions">
+        <button class="btn btn-success" id="btnValeAPena">Sim, vale a pena</button>
+        <button class="btn btn-danger" id="btnNaoValeAPena">Não vale a pena</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+});
